@@ -1,6 +1,5 @@
-flask
-flask_cors
-fastapi
-uvicorn
-httpx[http2]
-playwright
+curl-cffi==0.8.1b9
+wasmtime
+numpy
+nodriver
+drissionpage
