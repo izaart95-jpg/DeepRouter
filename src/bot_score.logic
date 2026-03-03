@@ -1,0 +1,49 @@
+(function() {
+    console.log('🔧 Installing COMPLETE forceLowRecaptchaScore blocker...');
+
+    // Fetch interceptor with logging
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        let [url, options = {}] = args;
+        
+        if (options.body && typeof options.body === 'string') {
+            try {
+                const body = JSON.parse(options.body);
+                
+                const deepClean = (obj) => {
+                    if (!obj || typeof obj !== 'object') return obj;
+                    
+                    if (Array.isArray(obj)) {
+                        return obj.map(item => deepClean(item));
+                    }
+                    
+                    const cleaned = {};
+                    for (const [key, value] of Object.entries(obj)) {
+                        if (key === 'forceLowRecaptchaScore') {
+                            console.log(`🚫 REMOVED forceLowRecaptchaScore from request to ${url}`);
+                            continue; // SKIP - don't add to cleaned object
+                        }
+                        cleaned[key] = deepClean(value);
+                    }
+                    return cleaned;
+                };
+                
+                const cleanedBody = deepClean(body);
+                
+                // Verify it's gone
+                if (url.includes('test')) {
+                    console.log('📥 Final cleaned body:', JSON.stringify(cleanedBody, null, 2));
+                }
+                
+                options = { ...options, body: JSON.stringify(cleanedBody) };
+                args[1] = options;
+            } catch (e) {
+                console.log('Error cleaning body:', e);
+            }
+        }
+        
+        return originalFetch.apply(this, args);
+    };
+
+    console.log('✅ Blocker installed with verification!');
+})();

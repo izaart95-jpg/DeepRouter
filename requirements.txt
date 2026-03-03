@@ -1,0 +1,6 @@
+flask
+flask_cors
+fastapi
+uvicorn
+httpx[http2]
+playwright
