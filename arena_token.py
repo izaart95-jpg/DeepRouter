@@ -901,7 +901,7 @@ function renderWindows(windows) {
   container.innerHTML = windows.map(w => {
     const bc      = w.status || 'loading';
     const bt      = bc.replace(/_/g, ' ').toUpperCase();
-    const isReady = w.status !== 'loading' && w.status !== 'reloading';
+    const isReady = w.status !== 'loading';
     const dis     = !isReady ? 'disabled' : '';
     return `
     <div class="window-card">
@@ -1197,6 +1197,14 @@ async def _reload_window_after_token(window_id: int, version: str):
     # Re-check: if stop was clicked during the reload, don't re-inject
     if _windows[window_id].get("active_script") is None:
         print(f"[{label} {window_id}] Harvester stopped during reload — not re-injecting.")
+        return
+
+    # Add delay before re-injecting so user can click Stop button
+    await asyncio.sleep(3)
+
+    # Re-check again after delay in case user clicked Stop
+    if _windows[window_id].get("active_script") is None:
+        print(f"[{label} {window_id}] Harvester stopped after delay — not re-injecting.")
         return
 
     # Re-inject the harvester script so it keeps running
