@@ -51,6 +51,7 @@ python interactive_chat.py
 # Run Openai compaitable api proxy
 ```bash
 python proxy.py
+# note : works best for python version below 3.12
 ```
 
 ## Turn History On
