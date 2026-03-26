@@ -3,3 +3,6 @@ wasmtime
 numpy
 nodriver
 drissionpage
+setuptools
+uvicorn
+fastapi
