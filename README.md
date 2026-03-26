@@ -40,6 +40,7 @@ cp .env.example .env
 ```bash
 # OR
 export DEEPSEEK_TOKEN=token  # without quotes
+# $env:DEEPSEEK_TOKEN="cxz7RlyD+..........0aXG1";For windows
 ```
 
 # Run Interactive Chat
